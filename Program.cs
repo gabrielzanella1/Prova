@@ -1,15 +1,14 @@
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using Loja.data;
 using Loja.models;
+using System.Data;
 
-var builder = WebApplication.CreateBuilder(args);
+using Loja.services;
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-// Configurar conexão com o BD
+ // Configure a conexão com o BD
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<LojaDbContext>(options => options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 36))));
 
@@ -25,52 +24,43 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 
-
 //<<<----------Produtos----------->>>
 
-app.MapPost("/createproduto", async (LojaDbContext dbContext, Produto newProduto) => 
+app.MapPost("/produtos", async (Produto produto, ProductService productService) =>
 {
-    dbContext.Produtos.Add(newProduto);
-    await dbContext.SaveChangesAsync();
-    return Results.Created($"/createproduto/{newProduto.Id}", newProduto);
+    await productService.AddProductAsync(produto);
+    return Results.Created($"/produtos/{produto.Id}", produto);
 });
 
-app.MapGet("/produtos", async (LojaDbContext dbContext) => 
+app.MapGet("/produtos", async (ProductService productService) =>
 {
-    var produtos = await dbContext.Produtos.ToListAsync();
+    var produtos = await productService.GetAllProductsAsync();
     return Results.Ok(produtos);
 });
 
-app.MapGet("/produtos/{id}", async (int id, LojaDbContext dbContext) => 
+app.MapGet("/produtos/{id}", async (int id, ProductService productService) =>
 {
-    var produto = await dbContext.Produtos.FindAsync(id);
+    var produto = await productService.GetProductByIdAsync(id);
     if (produto == null){
-        return Results.NotFound($"Produto with ID {id} not found.");
+        return Results.NotFound($"Product with ID {id} not found.");
     }
     return Results.Ok(produto);
 });
 
-app.MapPut("/produtos/{id}", async (int id, LojaDbContext dbContext, Produto updateProduto) =>
+app.MapPut("/produtos/{id}", async (int id, Produto produto, ProductService productService) =>
 {
-
-    //Verifica se o produto existe no banco de dados e caso exista será retornado para dentro do objeto existingProduto.
-    var existingProduto = await dbContext.Produtos.FindAsync(id);
-    if(existingProduto == null){
-        return Results.NotFound($"Produto with ID {id} not found.");
+    if (id != produto.Id){
+        return Results.BadRequest("Product ID mismatch.");
     }
-
-    //Atualiza os dados do existingProduto.
-    existingProduto.Nome = updateProduto.Nome;
-    existingProduto.Preco = updateProduto.Preco;
-    existingProduto.Fornecedor = updateProduto.Fornecedor;
-
-    //Salva no bd
-    await dbContext.SaveChangesAsync();
-
-    //Retorna para o cliente que invocou o endpoint.
-    return Results.Ok(existingProduto);
+    await productService.UpdateProductAsync(produto);
+    return Results.Ok();
 });
 
+app.MapDelete("/produtos/{id}", async (int id, ProductService productService) =>
+{
+    await productService.DeleteProductAsync(id);
+    return Results.Ok();
+});
 
 //<<<----------Cliente----------->>>
 

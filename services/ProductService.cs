@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using loja.data;
-using loja.models;
+using Loja.data;
+using Loja.models;
 
-namespace loja.services
+namespace Loja.services
 {
     public class ProductService
     {
