@@ -96,25 +96,70 @@ app.MapGet("/clientes/{id}", async (int id, LojaDbContext dbContext) =>
     return Results.Ok(cliente);
 });
 
-app.MapPut("/clientes/{id}", async (int id, LojaDbContext dbContext, Produto updateProduto) =>
+app.MapPut("/clientes/{id}", async (int id, LojaDbContext dbContext, Cliente updateCliente) =>
 {
 
-    //Verifica se o produto existe no banco de dados e caso exista será retornado para dentro do objeto existingProduto.
-    var existingProduto = await dbContext.Produtos.FindAsync(id);
-    if(existingProduto == null){
-        return Results.NotFound($"Produto with ID {id} not found.");
+    //Verifica se o cliente existe no banco de dados e caso exista será retornado para dentro do objeto existingProduto.
+    var existingCliente = await dbContext.Clientes.FindAsync(id);
+    if(existingCliente == null){
+        return Results.NotFound($"Cliente with ID {id} not found.");
     }
 
-    //Atualiza os dados do existingProduto.
-    existingProduto.Nome = updateProduto.Nome;
-    existingProduto.Preco = updateProduto.Preco;
-    existingProduto.Fornecedor = updateProduto.Fornecedor;
+    //Atualiza os dados do existingCliente.
+    existingCliente.Nome = updateCliente.Nome;
+    existingCliente.Cpf = updateCliente.Cpf;
+    existingCliente.Email = updateCliente.Email;
 
     //Salva no bd
     await dbContext.SaveChangesAsync();
 
     //Retorna para o cliente que invocou o endpoint.
-    return Results.Ok(existingProduto);
+    return Results.Ok(existingCliente);
+});
+
+//<<<----------Fornecedor----------->>>
+
+app.MapPost("/createfornecedor", async (LojaDbContext dbContext, Fornecedor newFornecedor) =>
+{
+    dbContext.Fornecedores.Add(newFornecedor);
+    await dbContext.SaveChangesAsync();
+    return Results.Created($"/createfornecedor/{newFornecedor.Id}", newFornecedor);
+});
+
+app.MapGet("/fornecedores", async (LojaDbContext dbContext) =>
+{
+    var fornecedores = await dbContext.Fornecedores.ToListAsync();
+    return Results.Ok(fornecedores);
+});
+
+app.MapGet("/fornecedores/{Id}", async (int Id, LojaDbContext dbContext) =>
+{
+    var fornecedor = await dbContext.Fornecedores.FindAsync(Id);
+    if (fornecedor == null)
+    {
+        return Results.NotFound($"Fornecedor de ID {Id} não encontrado");
+    }
+
+    return Results.Ok(fornecedor);
+});
+
+app.MapPut("/fornecedores/{Id}", async (int Id, LojaDbContext dbContext, Fornecedor updateFornecedor) =>
+{
+    var existingFornecedor = await dbContext.Fornecedores.FindAsync(Id);
+    if (existingFornecedor == null)
+    {
+        return Results.NotFound($"Fornecedor de ID {Id} não encontrado");
+    }
+
+    existingFornecedor.Nome = updateFornecedor.Nome;
+    existingFornecedor.CNPJ = updateFornecedor.CNPJ;
+    existingFornecedor.Endereco = updateFornecedor.Endereco;
+    existingFornecedor.Email = updateFornecedor.Email;
+    existingFornecedor.Telefone = updateFornecedor.Telefone;
+
+    await dbContext.SaveChangesAsync();
+
+    return Results.Ok(existingFornecedor);
 });
 
 
