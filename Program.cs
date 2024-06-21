@@ -24,6 +24,13 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.MapPost("/createproduto", async (LojaDbContext dbContext, Produto newProduto) => 
+{
+    dbContext.Produtos.Add(newProduto);
+    await dbContext.SaveChangesAsync();
+    return Results.Created($"/createproduto/{newProduto.Id}", newProduto);
+});
+
 var summaries = new[]
 {
     "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
