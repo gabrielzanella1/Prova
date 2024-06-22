@@ -16,12 +16,14 @@ namespace Loja.services
             _context = context;
         }
 
+        // Método para gravar uma nova venda
         public async Task AddVendaAsync(Venda venda)
         {
             _context.Vendas.Add(venda);
             await _context.SaveChangesAsync();
         }
 
+        // Método para consultar uma venda a partir do ID de um Produto
         public async Task<IEnumerable<Venda>> GetVendasByProdutoIdAsync(int produtoId)
         {
             return await _context.Vendas
@@ -31,6 +33,7 @@ namespace Loja.services
                 .ToListAsync();
         }
 
+        // Método para consultar uma venda a partir do ID de um Cliente
         public async Task<IEnumerable<Venda>> GetVendasByClienteIdAsync(int clienteId)
         {
             return await _context.Vendas
