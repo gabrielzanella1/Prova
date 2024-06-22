@@ -104,3 +104,11 @@ C:\Users\Gabriel\Desktop\Loja\obj\Debug\net8.0\refint\Loja.dll
 C:\Users\Gabriel\Desktop\Loja\obj\Debug\net8.0\Loja.pdb
 C:\Users\Gabriel\Desktop\Loja\obj\Debug\net8.0\Loja.genruntimeconfig.cache
 C:\Users\Gabriel\Desktop\Loja\obj\Debug\net8.0\ref\Loja.dll
+C:\Users\Gabriel\Desktop\Loja\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\Gabriel\Desktop\Loja\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+C:\Users\Gabriel\Desktop\Loja\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\Gabriel\Desktop\Loja\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\Gabriel\Desktop\Loja\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+C:\Users\Gabriel\Desktop\Loja\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\Gabriel\Desktop\Loja\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\Gabriel\Desktop\Loja\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
