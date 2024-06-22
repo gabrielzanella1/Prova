@@ -36,6 +36,7 @@ builder.Services.AddScoped<ProductService>();
 builder.Services.AddScoped<FornecedorService>();
 builder.Services.AddScoped<UsuarioService>();
 builder.Services.AddScoped<VendaService>();
+builder.Services.AddScoped<ClienteService>();
 
 // -- Adicionar serviços do Swagger ao contêiner
 builder.Services.AddEndpointsApiExplorer();
@@ -228,24 +229,23 @@ app.MapDelete("/produtos/{id}", async (int id, ProductService productService) =>
 //<<<----------Cliente----------->>>
 
 // -- Método para criar um novo cliente
-app.MapPost("/createcliente", async (LojaDbContext dbContext, Cliente newCliente) =>
+app.MapPost("/createcliente", async (ClienteService clienteService, Cliente newCliente) =>
 {
-    dbContext.Clientes.Add(newCliente);
-    await dbContext.SaveChangesAsync();
+    await clienteService.AddClienteAsync(newCliente);
     return Results.Created($"/createcliente/{newCliente.Id}", newCliente);
 });
 
 // -- Método para consultar todos os clientes
-app.MapGet("/clientes", async (LojaDbContext dbContext) =>
+app.MapGet("/clientes", async (ClienteService clienteService) =>
 {
-    var clientes = await dbContext.Clientes.ToListAsync();
+    var clientes = await clienteService.GetAllClientesAsync();
     return Results.Ok(clientes);
 });
 
 // -- Método para consultar um cliente a partir do seu Id
-app.MapGet("/clientes/{id}", async (int id, LojaDbContext dbContext) =>
+app.MapGet("/clientes/{id}", async (int id, ClienteService clienteService) =>
 {
-    var cliente = await dbContext.Clientes.FindAsync(id);
+    var cliente = await clienteService.GetClienteByIdAsync(id);
     if (cliente == null)
     {
         return Results.NotFound($"Cliente with ID {id} not found.");
@@ -254,9 +254,9 @@ app.MapGet("/clientes/{id}", async (int id, LojaDbContext dbContext) =>
 });
 
 // -- Método para atualizar os dados de um cliente
-app.MapPut("/clientes/{id}", async (int id, LojaDbContext dbContext, Cliente updateCliente) =>
+app.MapPut("/clientes/{id}", async (int id, ClienteService clienteService, Cliente updateCliente) =>
 {
-    var existingCliente = await dbContext.Clientes.FindAsync(id);
+    var existingCliente = await clienteService.GetClienteByIdAsync(id);
     if (existingCliente == null)
     {
         return Results.NotFound($"Cliente with ID {id} not found.");
@@ -266,9 +266,16 @@ app.MapPut("/clientes/{id}", async (int id, LojaDbContext dbContext, Cliente upd
     existingCliente.Cpf = updateCliente.Cpf;
     existingCliente.Email = updateCliente.Email;
 
-    await dbContext.SaveChangesAsync();
+    await clienteService.UpdateClienteAsync(existingCliente);
 
     return Results.Ok(existingCliente);
+});
+
+// -- Método para excluir um cliente
+app.MapDelete("/clientes/{id}", async (int id, ClienteService clienteService) =>
+{
+    await clienteService.DeleteClienteAsync(id);
+    return Results.Ok();
 });
 
 //<<<----------Fornecedor----------->>>
