@@ -278,7 +278,13 @@ app.MapDelete("/servicos/{id}", async (int id, ServicoService servicoService) =>
 {
     await servicoService.DeleteServicoAsync(id);
     return Results.Ok();
+
+
 });
+
+
+
+
 
 
 //<<<----------Usuários----------->>>
