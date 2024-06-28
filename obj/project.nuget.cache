@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "TJDqUGmmE8hr9xyJumthSC2DjSo29HG6QrO1oGAYF6A2j9zIbIdFmWjthY5EhcIDzWpF1YpTmbeskX56C6Uu7g==",
+  "dgSpecHash": "I/EhtKcV0X8HIOdplFM+YwRvmBq3XtFMmAy/SxRgrLGbh32OXOQ2f54qP1SCnBk9aGvVLDD2iVLI9UbnpsWGLg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\autologon\\Desktop\\Topicos_EntityFramework\\Loja.csproj",
+  "projectFilePath": "C:\\Users\\autologon\\Desktop\\Prova-Final\\Loja.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\autologon\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\autologon\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\8.0.6\\microsoft.aspnetcore.authentication.jwtbearer.8.0.6.nupkg.sha512",
